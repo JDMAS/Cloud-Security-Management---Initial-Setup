@@ -1,0 +1,89 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspace": {
+      "type": "String"
+    },
+    "new-id": {
+      "type": "string",
+      "defaultValue": "[newGuid()]"
+    }
+  },
+  "resources": [
+    {
+      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/','00000000-0000-0000-0000-000000000013')]",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/','00000000-0000-0000-0000-000000000013')]",
+        "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+        "kind": "Scheduled",
+        "apiVersion": "2022-09-01-preview",
+        "properties": {
+          "displayName": "[concat(parameters('workspace'),' - JDM admin account in use - report to JAK/MJ')]",
+                "description": "Rule created to check for activity on JDM admin accounts. Part of MFA project.",
+                "severity": "High",
+                "enabled": true,
+                "query": "union SigninLogs, AADNonInteractiveUserSignInLogs\r\n| where UserDisplayName has_any (\"workplace\", \"jdmadmin\", \"crmadmin\", \"office365\")\r\n| project\r\n    Category,\r\n    Identity,\r\n    LocationDetails_dynamic,\r\n    LocationDetails_string,\r\n    AppDisplayName,\r\n    ClientAppUsed,\r\n    IPAddress",
+                "queryFrequency": "P1D",
+                "queryPeriod": "P1D",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [
+                    "Reconnaissance"
+                ],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "FullName",
+                                "columnName": "Identity"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "IPAddress"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "CloudApplication",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "AppDisplayName"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
+            }
+        }
+    ]
+}

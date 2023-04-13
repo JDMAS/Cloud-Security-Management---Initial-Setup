@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },    
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/AutomationRules/00000000-0000-1500-0000-000000000000')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/00000000-0000-1500-0000-000000000000')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/automationRules",
+            "apiVersion": "2021-10-01-preview",
+            "properties": {
+                "displayName": "[Autoclose] - Attempt to sign in to disabled account logging purposes",
+                "order": 6,
+                "triggeringLogic": {
+                    "isEnabled": true,
+                    "triggersOn": "Incidents",
+                    "triggersWhen": "Created",
+                    "conditions": [
+                        {
+                            "conditionType": "Property",
+                            "conditionProperties": {
+                                "propertyName": "IncidentTitle",
+                                "operator": "Contains",
+								"propertyValues": [
+									"Attempts to sign in to disabled accounts",
+								]
+                            }
+                        }
+                    ]
+                },
+      "actions": [
+        {
+          "order": 1,
+          "actionType": "ModifyProperties",
+          "actionConfiguration": {
+            "severity": null,
+            "status": "Closed",
+            "classification": "BenignPositive",
+            "classificationReason": "SuspiciousButExpected",
+            "classificationComment": "Incidents created primarely for history purposes: OK",
+            "owner": null,
+            "labels": null
+          }
+        }
+      ],
+      "lastModifiedTimeUtc": "2023-03-14T11:50:51Z",
+      "createdTimeUtc": "2023-03-14T11:50:51Z",
+      "lastModifiedBy": {
+        "objectId": "b4231591-b602-4132-aefa-a3dea77769fd",
+        "email": "support@jdm.dk",
+        "name": "SYSTEM",
+        "userPrincipalName": "SYSTEM"
+      },
+      "createdBy": {
+        "objectId": "b4231591-b602-4132-aefa-a3dea77769fd",
+        "email": "support@jdm.dk",
+        "name": "SYSTEM",
+        "userPrincipalName": "SYSTEM"
+      }
+    }
+  }
+]
+}

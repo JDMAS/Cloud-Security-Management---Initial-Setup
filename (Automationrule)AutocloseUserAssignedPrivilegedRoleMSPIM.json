@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },    
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/AutomationRules/00000000-0000-1600-0000-000000000000')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/00000000-0000-1600-0000-000000000000')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/automationRules",
+            "apiVersion": "2021-10-01-preview",
+            "properties": {
+                "displayName": "[Autoclose] - User Assigned Privileged Role using MS-PIM",
+                "order": 7,
+                "triggeringLogic": {
+                    "isEnabled": true,
+                    "triggersOn": "Incidents",
+                    "triggersWhen": "Created",
+                    "conditions": [
+                        {
+                            "conditionType": "Property",
+                            "conditionProperties": {
+                                "propertyName": "IncidentTitle",
+                                "operator": "Contains",
+								"propertyValues": [
+									"User Assigned Privileged Role"
+								]
+                                  }
+                      },
+                      {
+             	         "conditionType":  "Property",
+                           "conditionProperties":  {
+                               "propertyName":  "ProcessCommandLine",
+                               "operator":  "Equals",
+                                                "propertyValues":  [
+		                                           "MS-PIM"
+                                                ]
+                            }
+                        }
+                    ]
+                },
+      "actions": [
+        {
+          "order": 1,
+          "actionType": "ModifyProperties",
+          "actionConfiguration": {
+            "severity": null,
+            "status": "Closed",
+            "classification": "BenignPositive",
+            "classificationReason": "SuspiciousButExpected",
+            "classificationComment": "Incident closed because Microsoft Privileged Identity Management were used: OK",
+            "owner": null,
+            "labels": null
+          }
+        }
+      ],
+      "lastModifiedTimeUtc": "2023-03-14T11:50:51Z",
+      "createdTimeUtc": "2023-03-14T11:50:51Z",
+      "lastModifiedBy": {
+        "objectId": "b4231591-b602-4132-aefa-a3dea77769fd",
+        "email": "support@jdm.dk",
+        "name": "SYSTEM",
+        "userPrincipalName": "SYSTEM"
+      },
+      "createdBy": {
+        "objectId": "b4231591-b602-4132-aefa-a3dea77769fd",
+        "email": "support@jdm.dk",
+        "name": "SYSTEM",
+        "userPrincipalName": "SYSTEM"
+      }
+    }
+  }
+]
+}
