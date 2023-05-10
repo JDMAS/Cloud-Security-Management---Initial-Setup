@@ -26,7 +26,8 @@
                                 "propertyName": "IncidentTitle",
                                 "operator": "Contains",
 								"propertyValues": [
-									"User Assigned Privileged Role"
+									"User Assigned Privileged Role",
+									"Modifications to High Privileged Accounts"
 								]
                                   }
                       },
