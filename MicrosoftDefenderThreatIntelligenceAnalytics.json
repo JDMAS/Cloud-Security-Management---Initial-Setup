@@ -21,7 +21,7 @@
                 "enabled": true,
                 "alertRuleTemplateName": "0dd422ee-e6af-4204-b219-f59ac172e4c6",
                 "description": "This rule generates an alert when a Microsoft Defender Threat Intelligence Indicator gets matched with your event logs. The alerts are very high fidelity.",
-                "displayName": "[concat(parameters('workspace'),' - (Preview) Microsoft Defender Threat Intelligence Analytics')]",
+                "displayName": "[concat(parameters('workspace'),' - Microsoft Defender Threat Intelligence Analytics')]",
                 "severity": "Medium",
                 "tactics": [
                     "Persistence",
