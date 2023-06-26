@@ -22,35 +22,49 @@
           "description": "This analytic will make an LOW incident, if any .exe related to Defender AV reports an error",
           "severity": "Low",
           "enabled": true,
-	  "query": "Event | where RenderedDescription has 'Navn på program med fejl: MsMpEng.exe' or RenderedDescription has 'Navn på program med fejl: MsSense.exe' or RenderedDescription has 'Navn på program med fejl: NisSrv.exe' or RenderedDescription has 'Navn på program med fejl: SenseIR.exe' or RenderedDescription has 'Error: MsMpEng.exe' or RenderedDescription has 'Error: MsSense.exe' or RenderedDescription has 'Error: NisSrv.exe' or RenderedDescription has 'Error: SenseIR.exe'",
-          "queryFrequency": "PT15M",
-          "queryPeriod": "PT15M",
-          "triggerOperator": "GreaterThan",
-          "triggerThreshold": 2,
-          "suppressionDuration": "PT5H",
-          "suppressionEnabled": false,
-          "tactics": [],
-          "techniques": [],
-          "alertRuleTemplateName": null,
-          "incidentConfiguration": {
-            "createIncident": true,
-            "groupingConfiguration": {
-              "enabled": false,
-              "reopenClosedIncident": false,
-              "lookbackDuration": "PT15M",
-              "matchingMethod": "AllEntities",
-              "groupByEntities": [],
-              "groupByAlertDetails": [],
-              "groupByCustomDetails": []
-            }
-          },
-          "eventGroupingSettings": {
-            "aggregationKind": "SingleAlert"
-          },
-          "alertDetailsOverride": null,
-          "customDetails": null,
-          "entityMappings": null,
-          "sentinelEntitiesMappings": null
+                "query": "Event | where RenderedDescription has 'Navn på program med fejl: MsMpEng.exe' or RenderedDescription has 'Navn på program med fejl: MsSense.exe' or RenderedDescription has 'Navn på program med fejl: NisSrv.exe' or RenderedDescription has 'Navn på program med fejl: SenseIR.exe' or RenderedDescription has 'Error: MsMpEng.exe' or RenderedDescription has 'Error: MsSense.exe' or RenderedDescription has 'Error: NisSrv.exe' or RenderedDescription has 'Error: SenseIR.exe'",
+                "queryFrequency": "PT15M",
+                "queryPeriod": "PT15M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 2,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT15M",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": {
+                    "ErrorDescription": "RenderedDescription"
+                },
+                "entityMappings": [
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "Computer"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null
         }
       }
     ]
